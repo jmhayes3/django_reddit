@@ -6,7 +6,7 @@ from django.db import models
 
 
 class RedditUser(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=35, null=True, default=None,
                                   blank=True)
     last_name = models.CharField(max_length=35, null=True, default=None,
@@ -17,7 +17,7 @@ class RedditUser(models.Model):
     about_html = models.TextField(blank=True, null=True, default=None)
     gravatar_hash = models.CharField(max_length=32, null=True, blank=True,
                                      default=None)
-    display_picture = models.NullBooleanField(default=False)
+    display_picture = models.BooleanField(null=True)
     homepage = models.URLField(null=True, blank=True, default=None)
     twitter = models.CharField(null=True, blank=True, max_length=15,
                                default=None)

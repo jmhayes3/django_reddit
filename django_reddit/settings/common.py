@@ -7,11 +7,20 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 import os
-import environ
+SETTINGS_PATH = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(SETTINGS_PATH, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
+TEMPLATES_PATH = os.path.join(PROJECT_PATH, "templates")
 
-ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
+TEMPLATE_DIRS = (
+    TEMPLATES_PATH,
+)
 
-env = environ.Env()
+# ROOT_DIR = os.path.abspath(__file__) - 3  # (/a/b/myfile.py - 3 = /)
+ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
+# ROOT_DIR = os.getcwd()
+
+# env = os.environ
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -50,7 +59,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     # Make sure djangosecure.middleware.SecurityMiddleware is listed first
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,18 +73,19 @@ MIDDLEWARE_CLASSES = (
 # DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = env.bool("DJANGO_DEBUG", False)
+DEBUG = os.getenv("DJANGO_DEBUG", True)
 
 # FIXTURE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (
-    str(ROOT_DIR.path('fixtures')),
-)
+# FIXTURE_DIRS = (
+#     str(ROOT_DIR.path('fixtures')),
+# )
+FIXTURE_DIRS = os.path.join(ROOT_DIR, "/fixtures")
 
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_BACKEND = os.getenv('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -92,8 +102,12 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="sqlite:///{}".format(ROOT_DIR + 'dev.db')),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': "dev.db",
+    }
 }
+# DATABASES['default']['ATOMIC_REQUESTS'] = True
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
@@ -128,8 +142,10 @@ TEMPLATES = [
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-        'DIRS'   : [
-            str(ROOT_DIR.path('templates')),
+        'APP_DIRS': False,
+        'DIRS' : [
+            os.path.join(ROOT_DIR, "/templates"),
+            "/Users/jmh/code/django_reddit/templates",
         ],
         'OPTIONS': {
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
@@ -160,14 +176,16 @@ TEMPLATES = [
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+# STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+STATIC_ROOT = os.path.join(ROOT_DIR, '/staticfiles')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
-    str(ROOT_DIR.path('static')),
+    # str(ROOT_DIR.path('static')),
+    os.path.join(ROOT_DIR, "/static"),
     'static',
 )
 
@@ -180,7 +198,7 @@ STATICFILES_FINDERS = (
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(ROOT_DIR('media'))
+MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'

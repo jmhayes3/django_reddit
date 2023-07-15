@@ -11,7 +11,7 @@ from django_reddit.utils.model_utils import ContentTypeAware, MttpContentTypeAwa
 
 class Submission(ContentTypeAware):
     author_name = models.CharField(null=False, max_length=12)
-    author = models.ForeignKey('users.RedditUser')
+    author = models.ForeignKey('users.RedditUser', on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     url = models.URLField(null=True, blank=True)
     text = models.TextField(max_length=5000, blank=True)
@@ -44,10 +44,10 @@ class Submission(ContentTypeAware):
 
 class Comment(MttpContentTypeAware):
     author_name = models.CharField(null=False, max_length=12)
-    author = models.ForeignKey('users.RedditUser')
-    submission = models.ForeignKey(Submission)
+    author = models.ForeignKey('users.RedditUser', on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     parent = TreeForeignKey('self', related_name='children',
-                            null=True, blank=True, db_index=True)
+                            null=True, blank=True, db_index=True, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
     ups = models.IntegerField(default=0)
     downs = models.IntegerField(default=0)
@@ -100,9 +100,9 @@ class Comment(MttpContentTypeAware):
 
 
 class Vote(models.Model):
-    user = models.ForeignKey('users.RedditUser')
-    submission = models.ForeignKey(Submission)
-    vote_object_type = models.ForeignKey(ContentType)
+    user = models.ForeignKey('users.RedditUser', on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    vote_object_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     vote_object_id = models.PositiveIntegerField()
     vote_object = GenericForeignKey('vote_object_type', 'vote_object_id')
     value = models.IntegerField(default=0)

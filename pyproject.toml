@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "django-reddit"
+version = "0.1.0"
+description = ""
+authors = ["jmhayes3 <22490346+jmhayes3@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "django_reddit"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^2"
+django-widget-tweaks = "^1.4.12"
+django-mptt = "^0.14.0"
+mistune = "^3.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

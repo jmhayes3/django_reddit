@@ -46,7 +46,7 @@ def frontpage(request):
 
     submission_votes = {}
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         for submission in submissions:
             try:
                 vote = Vote.objects.get(
@@ -77,7 +77,7 @@ def comments(request, thread_id=None):
 
     thread_comments = Comment.objects.filter(submission=this_submission)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         try:
             reddit_user = RedditUser.objects.get(user=request.user)
         except RedditUser.DoesNotExist:
@@ -117,7 +117,7 @@ def comments(request, thread_id=None):
 
 @post_only
 def post_comment(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return JsonResponse({'msg': "You need to log in to post new comments."})
 
     parent_type = request.POST.get('parentType', None)
@@ -166,7 +166,7 @@ def vote(request):
     # client side by the javascript instead of waiting for a refresh.
     vote_diff = 0
 
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponseForbidden()
     else:
         user = RedditUser.objects.get(user=request.user)
