@@ -6,9 +6,7 @@
 
     <div class="media">
         <div class="media-left">
-            <div class="vote"
-                 data-what-type="submission"
-                 data-what-id="{{ submission.id }}">
+            <div class="vote" data-what-type="submission" data-what-id="{{ submission.id }}">
                 <div><i class="fa fa-chevron-up {% if  sub_vote == 1 %} upvoted {% endif %}"
                         title="upvote" onclick="vote(this)"></i>
                 </div>
@@ -21,10 +19,14 @@
         <div class="media-body">
             <div class="reply-container">
                 <a class="thread-title" href="{{ submission.linked_url }}">{{ submission.title }}</a>
+                <h5 class="thread-info">
+                    <a href="{{ submission.comments_url }}/edit"> edit </a>
+                </h5>
                 <br>
-                <h6 class="thread-info">submitted {{ submission.timestamp|naturaltime }} by <a
-                        href="/user/{{ submission.author_name }}">{{ submission.author_name }}</a></h6>
-                {{ submission.text_html|safe }}
+                <span>{{ submission.text_html|safe }}</span>
+                <h6 class="thread-info">
+                    submitted {{ submission.timestamp|naturaltime }} by <a href="/user/{{ submission.author_name }}">{{ submission.author_name }} </a>
+                </h6>
                 <ul class="buttons">
                     <li><a href="{{ submission.comments_url }}">{{ submission.comment_count }} comments</a></li>
                 </ul>
@@ -34,12 +36,8 @@
 
         {#    New comment block#}
 
-        <form id="commentForm" class="form-horizontal"
-              action="/post/comment/"
-              data-parent-type="submission"
-              data-parent-id="{{ submission.id }}">
+        <form id="commentForm" class="form-horizontal" action="/post/comment/" data-parent-type="submission" data-parent-id="{{ submission.id }}">
             <fieldset>
-
                 <div class="form-group comment-group">
                     <label for="commentContent" class="col-lg-2 control-label">New comment</label>
 

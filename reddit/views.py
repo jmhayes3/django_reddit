@@ -256,3 +256,34 @@ def submit(request):
             return redirect('/comments/{}'.format(submission.id))
 
     return render(request, 'public/submit.html', {'form': submission_form})
+
+
+@login_required
+def edit(request, thread_id):
+    """
+    Handles submission edits.
+    """
+    submission = get_object_or_404(Submission, id=thread_id)
+
+    submission_form = SubmissionForm()
+
+    if request.method == 'POST':
+        submission_form = SubmissionForm(request.POST)
+        if submission_form.is_valid():
+            edited_submission = submission_form.save(commit=False)
+            user = User.objects.get(username=request.user)
+            redditUser = RedditUser.objects.get(user=user)
+            edited_submission.author = redditUser
+            edited_submission.author_name = user.username
+            edited_submission.id = submission.id
+            edited_submission.score = submission.score
+            edited_submission.ups = submission.ups
+            edited_submission.downs = submission.downs
+            edited_submission.generate_html()
+            edited_submission.save()
+            messages.success(request, 'Submission edited successfully.')
+            return redirect('/comments/{}'.format(edited_submission.id))
+    
+    submission_form.title = submission.title
+
+    return render(request, 'public/edit.html', {'form': submission_form, 'submission': submission})
