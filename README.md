@@ -14,7 +14,14 @@ To start the server, run the following commands from the project root directory:
     
 For the time being there is no separate production specific settings because the project is not yet production ready.
 
-## Deployment
+## Screenshots
 
-* TODO: Write here how to deploy
+![Task1](/docs/images/cm1_django_reddit_task1.png)
 
+![Task2](/docs/images/cm1_django_reddit_task2.png)
+
+![Task3](/docs/images/cm1_django_reddit_task3.png)
+
+![Task4_2](/docs/images/cm1_django_reddit_task4_1.png)
+
+![Task4_2](/docs/images/cm1_django_reddit_task4_2.png)
