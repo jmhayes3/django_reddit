@@ -1,49 +1,24 @@
-#Django reddit
-Reddit clone written in python using django web framework and twitter's bootstrap.
+# Django Reddit
+Reddit clone written in python using django web framework and bootstrap.
 
-[![Build Status](https://travis-ci.org/Nikola-K/django_reddit.svg)](https://travis-ci.org/Nikola-K/django_reddit) [![Coverage Status](https://coveralls.io/repos/Nikola-K/django_reddit/badge.svg?branch=master&service=github)](https://coveralls.io/github/Nikola-K/django_reddit?branch=master)
+## Installation
 
-#Screenshots
+    $ git clone https://github.com/jmhayes3/django_reddit.git
+    $ cd django_reddit
 
-![desktop_frontpage](_screenshots/desktop_frontpage 2015-06-22.jpg?raw=true)
+## Usage
+To start the server, run the following commands from the project root directory:
 
-![desktop_submission](_screenshots/desktop_submission 2015-06-22.jpg?raw=true)
-
-![profile_view](_screenshots/profile_view 2015-06-24.png)
-
-![profile_edit](_screenshots/profile_edit 2015-06-24.png)
-
-Fully responsive:
-
-![mobile_frontpage](_screenshots/mobile_frontpage 2015-06-22.png?raw=true)
-
-![mobile_submit](_screenshots/mobile_submit 2015-06-22.png?raw=true)
-
-![mobile_thread](_screenshots/mobile_thread 2015-06-22.png?raw=true)
-
-#Getting up and running
-
-The project is python 3 only.
-
-The steps below will get you up and running with a local development environment. We assume you have the following installed:
-
-    pip
-    virtualenv
-    
-First make sure to create and activate a virtualenv, then open a terminal at the project root and install the requirements for local development:
-
-    $ pip install -r requirements.txt
-    $ python manage.py migrate
-    $ python manage.py syncdb
+    $ python manage.py migrate --run-syncdb
     $ python manage.py runserver
     
 For the time being there is no separate production specific settings because the project is not yet production ready.
 
-#Deployment
+## Deployment
 
 * TODO: Write here how to deploy
 
-#License
+## License
 
     Copyright 2016 Nikola Kovacevic <nikolak@outlook.com>
 
