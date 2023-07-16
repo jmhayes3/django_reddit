@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+          <div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
                 <div class="well profile">
                     <div class="col-sm-12">
                         <div class="col-xs-12 col-sm-8">
@@ -80,7 +81,73 @@
                         </div>
                     </div>
                 </div>
+          </div>
+        <!-- End row. -->
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+              <h3>Submissions</h3>
+                <table>
+                    <tbody>
+                    {% if submissions %}
+                      {% for submission in submissions %}
+                        {% if submission.author.user == profile.user %}
+                          <tr>
+                            <td class="info-container">
+                                <a class="thread-title" href="{{ submission.comments_url }}">{{ submission.title }}</a>
+                                <br>
+                                {% if submission.url %}
+                                <span>
+                                    <a class="thread-info" href="{{ submission.linked_url }}">{{ submission.linked_url }}</a>
+                                </span>
+                                {% endif %}
+                                <h6 class="thread-info">submitted {{ submission.timestamp|naturaltime }} by <a
+                                        href="/user/{{ submission.author_name }}">{{ submission.author_name }}</a></h6>
+
+                                <ul class="buttons">
+                                    <li><a href="{{ submission.comments_url }}">{{ submission.comment_count }} comments</a></li>
+                                </ul>
+                            </td>
+                          </tr>
+                        {% endif %}
+                      {% endfor %}
+                    {% else %}
+                      <span>None</span>
+                    {% endif %}
+                    </tbody>
+                </table>
+              <!-- End user submissions. -->
             </div>
+        <!-- End row. -->
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <h3>Comments</h3>
+            {% if comments %}
+              {% for comment in comments %}
+                {% if comment.author.user == profile.user %}
+                  <tr>
+                    <td class="info-container">
+                        <!-- <a class="thread-title" href="{{ comment.submission.comments_url }}"> -->
+                        <!--   {{ comment.submission.title }} -->
+                        <!-- </a> -->
+                        <!-- <br> -->
+                        <a href="{{ comment.submission.comments_url }}">
+                          {{ comment.raw_comment }}
+                        </a>
+                        <br>
+                        <h6 class="thread-info">posted {{ comment.timestamp|naturaltime }}</h6>
+                    </td>
+                  </tr>
+                  <br>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              <span>None</span>
+            {% endif %}
+          <!-- End user comments. -->
+          </div>
+        <!-- End row. -->
         </div>
     </div>
 

@@ -2,11 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseBadRequest, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
 from reddit.forms import UserForm, ProfileForm
 from reddit.utils.helpers import post_only
+from reddit.models import Submission, Comment, Vote
 from users.models import RedditUser
 
 
@@ -14,7 +16,28 @@ def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = RedditUser.objects.get(user=user)
 
-    return render(request, 'public/profile.html', {'profile': profile})
+    all_submissions = Submission.objects.order_by('-score').all()
+    paginator = Paginator(all_submissions, 25)
+
+    page = request.GET.get('page', 1)
+    try:
+        submissions = paginator.page(page)
+    except PageNotAnInteger:
+        raise Http404
+    except EmptyPage:
+        submissions = paginator.page(paginator.num_pages)
+
+    comments = Comment.objects.order_by('-score').all()
+
+    return render(
+            request,
+            'public/profile.html',
+            {
+                'profile': profile,
+                'submissions': submissions,
+                'comments': comments
+            }
+        )
 
 
 @login_required
