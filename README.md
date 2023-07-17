@@ -1,6 +1,8 @@
 # Django Reddit
 Reddit clone written in python using django web framework and bootstrap.
 
+https://www.youtube.com/watch?v=z-j9suU82_g
+
 ## Installation
 
     $ git clone https://github.com/jmhayes3/django_reddit.git
